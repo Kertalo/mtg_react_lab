@@ -1,21 +1,44 @@
 import {useEffect, useState} from "react";
 import {Mtg} from "../api/mtg.js";
+import {Search} from "./Search.jsx";
 
-function CardList() {
+function CardList({ onCardSelect }) {
     const [cards, setCards] = useState([]);
+
     useEffect(() => {
         const mtg = new Mtg();
-        mtg.loadCards()
+        mtg.loadCards("")
             .then((loadedCards) => {
                 setCards(loadedCards)
             });
     }, []);
-   return <div id="menu">
-        <h2>Cards</h2>
-        <div id="listContainer">
-            {cards.map(card => <li key={card.id}>{card.name}</li>)}
+
+    const search = (searchText) => {
+        const mtg = new Mtg();
+        mtg.loadCards(searchText)
+            .then((loadedCards) => {
+                setCards(loadedCards)
+            });
+    };
+
+    const showCard = (item) => {
+        onCardSelect(item);
+    };
+
+    return (
+        <div id="menu" key="menuCards">
+            <h2 key="cards">Cards</h2>
+            <Search onSearch={search} />
+            <div id="listContainer" key="listContainer">
+                {
+                cards.map(card => card.multiverseid != undefined ?
+                    <li key={card.multiverseid} onClick={() => showCard(card)}>
+                        {card.name}
+                    </li> : <></>)
+                }
+            </div>
         </div>
-    </div>
+    )
 }
 
 export {CardList}

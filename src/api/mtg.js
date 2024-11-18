@@ -4,8 +4,11 @@ class Mtg {
         this.baseUrl = baseUrl;
     }
 
-    loadCards(){
-        return fetch(`${this.baseUrl}cards`)
+    loadCards(cardName){
+        let url = `${this.baseUrl}cards`
+        if (cardName != "")
+            url += `/?name=${cardName}`
+        return fetch(url)
             .then(response=>response.json())
             .then(json=>json.cards)
     }
