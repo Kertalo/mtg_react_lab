@@ -1,20 +1,29 @@
 import {useEffect, useRef} from "react";
 import * as d3 from "d3";
 
-function ManaStats() {
+function ManaStats({ deck }) {
     const svgRef =  useRef(null);
 
     useEffect(() => {
         const data = [
-            { cost: 0, count: 2 },
-            { cost: 1, count: 8 },
-            { cost: 2, count: 12 },
-            { cost: 3, count: 15 },
-            { cost: 4, count: 10 },
-            { cost: 5, count: 6 },
-            { cost: 6, count: 4 },
-            { cost: '7+', count: 3 }
+            { cost: 0, count: 0 },
+            { cost: 1, count: 0 },
+            { cost: 2, count: 0 },
+            { cost: 3, count: 0 },
+            { cost: 4, count: 0 },
+            { cost: 5, count: 0 },
+            { cost: 6, count: 0 },
+            { cost: '7+', count: 0 }
         ];
+        deck.forEach((deckCard, index) => {
+            const mana = deckCard.cmc;
+            const count = deckCard.count;
+            if (mana < 7)
+                data[mana].count += count
+            else
+                data[7].count += count
+        })
+
         const margin = { top: 30, right: 30, bottom: 70, left: 60 };
         const width = 460 - margin.left - margin.right;
         const height = 400 - margin.top - margin.bottom;
@@ -74,7 +83,7 @@ function ManaStats() {
             .attr("x", width / 2)
             .attr("y", height + margin.bottom - 10)
             .text("Mana Cost");
-    }, []);
+    }, [deck]);
 
     return <div id="manaStats" ref={svgRef}>
 

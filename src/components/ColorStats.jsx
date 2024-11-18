@@ -1,18 +1,52 @@
 import {useEffect, useRef} from "react";
 import * as d3 from "d3";
 
-function ColorStats() {
+function ColorStats({ deck }) {
     const svgRef =  useRef(null);
     useEffect(() => {
-        // TODO Data should not be here
         const data = [
-            { color: 'White', count: 15 },
-            { color: 'Blue', count: 12 },
-            { color: 'Black', count: 8 },
-            { color: 'Red', count: 10 },
-            { color: 'Green', count: 18 },
-            { color: 'Colorless', count: 7 }
+            { color: 'White', count: 0 },
+            { color: 'Blue', count: 0 },
+            { color: 'Black', count: 0 },
+            { color: 'Red', count: 0 },
+            { color: 'Green', count: 0 },
+            { color: 'Colorless', count: 0 }
         ];
+
+        deck.forEach((deckCard, index) => {
+            let colors = deckCard.manaCost;
+            colors = colors.replaceAll("}{", ",");
+            colors = colors.replaceAll("/", ",");
+            colors = colors.substring(1, colors.length-1);
+            alert(colors)
+            const colorsArr = colors.split(',')
+            const count = deckCard.count;
+            for (let i = 0; i < colorsArr.length; i++) {
+                switch (colorsArr[i]) {
+                    case "W":
+                        data[0].count += count;
+                        break;
+                    case "U":
+                        data[1].count += count;
+                        break;
+                    case "B":
+                        data[2].count += count;
+                        break;
+                    case "R":
+                        data[3].count += count;
+                        break;
+                    case "G":
+                        data[4].count += count;
+                        break;
+                    case "C":
+                        data[5].count += count;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        })
+
         const element = svgRef.current;
         element.innerHTML = '';
         const width = 200;
@@ -52,7 +86,7 @@ function ColorStats() {
             .attr("d", arc)
             .attr("fill", d => color(d.data.color));
 
-    }, []);
+    }, [deck]);
     return <div id="colorStats" ref={svgRef}>
 
     </div>

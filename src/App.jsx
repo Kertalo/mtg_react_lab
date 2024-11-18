@@ -57,7 +57,7 @@ function App() {
                 <CardList onCardSelect={handleCardSelect} />
                 {selectedCard && <Card card={selectedCard} onAddToDeck={handleAddToDeck} />}
                 <DeckPanel deck={deck} onRemoveFromDeck={handleRemoveFromDeck} />
-                <StatisticsPanel />
+                <StatisticsPanel deck={deck} />
             </main>
         </>
     );
