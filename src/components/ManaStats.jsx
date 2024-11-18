@@ -5,7 +5,6 @@ function ManaStats() {
     const svgRef =  useRef(null);
 
     useEffect(() => {
-        // TODO Data should not be here
         const data = [
             { cost: 0, count: 2 },
             { cost: 1, count: 8 },
