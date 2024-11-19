@@ -15,10 +15,11 @@ function ColorStats({ deck }) {
 
         deck.forEach((deckCard, index) => {
             let colors = deckCard.manaCost;
+            if (colors == undefined)
+                return
             colors = colors.replaceAll("}{", ",");
             colors = colors.replaceAll("/", ",");
             colors = colors.substring(1, colors.length-1);
-            // alert(colors)
             const colorsArr = colors.split(',')
             const count = deckCard.count;
             for (let i = 0; i < colorsArr.length; i++) {
